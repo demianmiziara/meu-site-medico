@@ -1,13 +1,32 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // ── HEADER ANIMATION ON SCROLL ──
+  // ── SCROLL ANIMATIONS (HEADER & FLOATING CTA) ──
   const header = document.querySelector('header');
+  const floatingCta = document.querySelector('.floating-cta');
+  let ticking = false;
+
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        // Estilo do Header
+        if (window.scrollY > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+
+        // Botão flutuante do WhatsApp
+        if (floatingCta) {
+          if (window.scrollY > 300) {
+            floatingCta.classList.add('visible');
+          } else {
+            floatingCta.classList.remove('visible');
+          }
+        }
+        ticking = false;
+      });
+      ticking = true;
     }
-  });
+  }, { passive: true });
 
   // ── SCROLL REVEAL EFFECT ──
   const reveals = document.querySelectorAll('.reveal');
@@ -83,15 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ── FLOATING CALL-TO-ACTION (WHATSAPP) ──
-  const floatingCta = document.querySelector('.floating-cta');
-  if (floatingCta) {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 400) {
-        floatingCta.classList.add('visible');
-      } else {
-        floatingCta.classList.remove('visible');
-      }
-    });
-  }
+  // ── FLOATING CALL-TO-ACTION (WHATSAPP INITIAL STATE) ──
+  // (Controlada pelo listener unificado e otimizado no topo da página)
 });
