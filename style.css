@@ -41,6 +41,12 @@ body::before {
   opacity: 0.55;
 }
 
+@media (max-width: 768px) {
+  body::before {
+    display: none; /* Desativa o ruído em celulares para economizar processamento e rodar liso */
+  }
+}
+
 /* ── CUSTOM SCROLLBAR ── */
 ::-webkit-scrollbar {
   width: 8px;
