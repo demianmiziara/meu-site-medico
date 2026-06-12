@@ -104,4 +104,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── FLOATING CALL-TO-ACTION (WHATSAPP INITIAL STATE) ──
   // (Controlada pelo listener unificado e otimizado no topo da página)
+
+  // ── NOVIDADES ──
+  const grid = document.getElementById('novidades-grid');
+  if (grid) {
+    const tipoLabel = { curiosidade: 'Curiosidade', artigo: 'Artigo', foto: 'Foto' };
+    const formatData = (iso) => {
+      const [y, m, d] = iso.split('-');
+      return `${d}/${m}/${y}`;
+    };
+    fetch('/noticias.json')
+      .then(r => r.json())
+      .then(items => {
+        if (!items.length) return;
+        grid.innerHTML = items.map(n => `
+          <article class="novidade-card">
+            ${n.imagem ? `<img src="${n.imagem}" alt="${n.titulo}" loading="lazy">` : ''}
+            <div class="novidade-body">
+              <p class="novidade-tipo">${tipoLabel[n.tipo] || n.tipo}</p>
+              <p class="novidade-data">${formatData(n.data)}</p>
+              <h3 class="novidade-titulo">${n.titulo}</h3>
+              <p class="novidade-resumo">${n.resumo}</p>
+            </div>
+          </article>
+        `).join('');
+      })
+      .catch(() => { grid.innerHTML = ''; });
+  }
 });
